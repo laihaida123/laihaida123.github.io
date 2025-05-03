@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>赖海达的博客</title>
   
-  <subtitle>每逢大事需静气，水穷之处有云生。</subtitle>
+  <subtitle>每逢大事需静气&amp;#44;水穷之处有云生</subtitle>
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
@@ -10,7 +10,7 @@
   <id>http://example.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>赖海达</name>
     
   </author>
   
