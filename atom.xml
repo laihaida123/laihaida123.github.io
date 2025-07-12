@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-07-12T07:54:32.183Z</updated>
+  <updated>2025-07-12T07:56:52.958Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2025/07/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/"/>
     <id>http://example.com/2025/07/12/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</id>
     <published>2025-07-12T07:44:06.000Z</published>
-    <updated>2025-07-12T07:54:32.183Z</updated>
+    <updated>2025-07-12T07:56:52.958Z</updated>
     
     <content type="html"><![CDATA[<p>欢迎来到我的 Hexo 博客！</p><p>这是我的第一篇文章，使用 Butterfly 主题，非常漂亮！</p>]]></content>
     
