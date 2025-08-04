@@ -7502,58 +7502,58 @@ figure.highlight pre .javascript .function {
   color: #49b1f5;
 }
 .container.post-content h1 {
-  padding-left: 38px;
-}
-.container.post-content h1:before {
-  font-size: 28px;
-}
-.container.post-content h1:hover {
-  padding-left: 42px;
-}
-.container.post-content h2 {
-  padding-left: 36px;
-}
-.container.post-content h2:before {
-  font-size: 26px;
-}
-.container.post-content h2:hover {
-  padding-left: 40px;
-}
-.container.post-content h3 {
-  padding-left: 34px;
-}
-.container.post-content h3:before {
-  font-size: 24px;
-}
-.container.post-content h3:hover {
-  padding-left: 38px;
-}
-.container.post-content h4 {
-  padding-left: 32px;
-}
-.container.post-content h4:before {
-  font-size: 22px;
-}
-.container.post-content h4:hover {
-  padding-left: 36px;
-}
-.container.post-content h5 {
-  padding-left: 30px;
-}
-.container.post-content h5:before {
-  font-size: 20px;
-}
-.container.post-content h5:hover {
-  padding-left: 34px;
-}
-.container.post-content h6 {
   padding-left: 28px;
 }
-.container.post-content h6:before {
+.container.post-content h1:before {
   font-size: 18px;
 }
-.container.post-content h6:hover {
+.container.post-content h1:hover {
   padding-left: 32px;
+}
+.container.post-content h2 {
+  padding-left: 26px;
+}
+.container.post-content h2:before {
+  font-size: 16px;
+}
+.container.post-content h2:hover {
+  padding-left: 30px;
+}
+.container.post-content h3 {
+  padding-left: 24px;
+}
+.container.post-content h3:before {
+  font-size: 14px;
+}
+.container.post-content h3:hover {
+  padding-left: 28px;
+}
+.container.post-content h4 {
+  padding-left: 22px;
+}
+.container.post-content h4:before {
+  font-size: 12px;
+}
+.container.post-content h4:hover {
+  padding-left: 26px;
+}
+.container.post-content h5 {
+  padding-left: 20px;
+}
+.container.post-content h5:before {
+  font-size: 10px;
+}
+.container.post-content h5:hover {
+  padding-left: 24px;
+}
+.container.post-content h6 {
+  padding-left: 20px;
+}
+.container.post-content h6:before {
+  font-size: 10px;
+}
+.container.post-content h6:hover {
+  padding-left: 24px;
 }
 .container.post-content ol p,
 .container.post-content ul p {
