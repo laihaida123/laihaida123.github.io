@@ -97,3 +97,23 @@ h6::before {
 #rightside_config i.fas.fa-cog.fa-spin {
     animation: fa-spin 5s linear infinite;
 }
+
+#content-inner.layout h1 {
+    font-size: 2.2rem;
+}
+
+#content-inner.layout h2 {
+    font-size: 1.9rem;
+}
+
+#content-inner.layout h3 {
+    font-size: 1.6rem;
+}
+
+#content-inner.layout h4 {
+    font-size: 1.4rem;
+}
+
+#content-inner.layout h5 {
+    font-size: 1.2rem;
+}
