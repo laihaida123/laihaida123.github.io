@@ -99,21 +99,25 @@ h6::before {
 }
 
 #content-inner.layout h1 {
-    font-size: 3.2rem;
+    font-size: 2.3rem;
 }
 
 #content-inner.layout h2 {
-    font-size: 2.9rem;
+    font-size: 2.0rem;
 }
 
 #content-inner.layout h3 {
-    font-size: 2.6rem;
+    font-size: 1.7rem;
 }
 
 #content-inner.layout h4 {
-    font-size: 2.4rem;
+    font-size: 1.5rem;
 }
 
 #content-inner.layout h5 {
-    font-size: 2.2rem;
+    font-size: 1.3rem;
+}
+
+#content-inner.layout h6 {
+    font-size: 1.2rem;
 }
