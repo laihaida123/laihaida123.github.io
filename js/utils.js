@@ -70,7 +70,7 @@
       }
     },
 
-    snackbarShow: (text, showAction = false, duration = 2000) => {
+    snackbarShow: (text, showAction = true, duration = 2000) => {
       // 如果是复制提示，就替换成你自己的文字
       if (text === "复制成功") {
         text = "要把伦家复制到哪里去呀~ (～o￣3￣)～";
