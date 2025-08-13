@@ -135,7 +135,7 @@ h6::before {
 }
 
 .snackbar-container .action {
-    color: var(--june-theme) !important;
+    color: #ff69b4 !important;
     background-color: transparent !important;
 }
 
