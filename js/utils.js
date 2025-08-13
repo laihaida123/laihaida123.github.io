@@ -74,7 +74,7 @@
       const { position, bgLight, bgDark } = GLOBAL_CONFIG.Snackbar
       const bg = document.documentElement.getAttribute('data-theme') === 'light' ? bgLight : bgDark
       Snackbar.show({
-        text: '想要把别人复制到什么地方去呀？~ (～o￣3￣)～ ',
+        text: text,
         backgroundColor: bg,
         showAction,
         duration,

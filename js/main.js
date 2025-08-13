@@ -924,6 +924,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   btf.addGlobalFn('pjaxComplete', refreshFn, 'refreshFn')
+  refreshFn()
+  unRefreshFn()
   // 开发者工具键盘监听（只绑定一次，避免 PJAX 重复）
   if (!window.__devtoolsToastBound) {
     window.__devtoolsToastBound = true
@@ -938,8 +940,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
-  refreshFn()
-  unRefreshFn()
 
   // 處理 hexo-blog-encrypt 事件
   window.addEventListener('hexo-blog-decrypt', e => {
