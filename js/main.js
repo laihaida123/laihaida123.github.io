@@ -695,24 +695,32 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
  * 複製時加上版權信息
  */
+  /**
+   * 複製時加上版權信息
+   */
   const addCopyright = () => {
-    const { limitCount, languages } = GLOBAL_CONFIG.copyright
+    const { limitCount, languages, copy, copyrightEbable } = GLOBAL_CONFIG.copyright;
 
-    const handleCopy = (e) => {
-      e.preventDefault()
-      const copyFont = window.getSelection(0).toString()
-      let textFont = copyFont
-      if (copyFont.length > limitCount) {
-        textFont = `${copyFont}\n\n\n${languages.author}\n${languages.link}${window.location.href}\n${languages.source}\n${languages.info}`
+    const handleCopy = e => {
+      if (copy) {
+        btf.snackbarShow(GLOBAL_CONFIG.copy.success);
       }
-      if (e.clipboardData) {
-        return e.clipboardData.setData('text', textFont)
-      } else {
-        return window.clipboardData.setData('text', textFont)
+      if (copyrightEbable) {
+        e.preventDefault();
+        const copyFont = window.getSelection(0).toString();
+        let textFont = copyFont;
+        if (copyFont.length > limitCount) {
+          textFont = `${copyFont}\n\n\n${languages.author}\n${languages.link}${window.location.href}\n${languages.source}\n${languages.info}`;
+        }
+        if (e.clipboardData) {
+          return e.clipboardData.setData("text", textFont);
+        } else {
+          return window.clipboardData.setData("text", textFont);
+        }
       }
-    }
+    };
 
-    document.body.addEventListener('copy', handleCopy)
+    document.body.addEventListener("copy", handleCopy);
   }
 
   /**
@@ -916,6 +924,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   btf.addGlobalFn('pjaxComplete', refreshFn, 'refreshFn')
+  // 开发者工具键盘监听（只绑定一次，避免 PJAX 重复）
+  if (!window.__devtoolsToastBound) {
+    window.__devtoolsToastBound = true
+    window.addEventListener('keydown', function (e) {
+      // F12
+      if (e.keyCode === 123) {
+        btf.snackbarShow("开发者模式已打开，请遵循GPL协议", false)
+      }
+      // Ctrl+Shift+I / Cmd+Option+I
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+        btf.snackbarShow("开发者模式已打开，请遵循GPL协议", false)
+      }
+    })
+  }
   refreshFn()
   unRefreshFn()
 

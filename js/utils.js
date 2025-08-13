@@ -74,12 +74,16 @@
       const { position, bgLight, bgDark } = GLOBAL_CONFIG.Snackbar
       const bg = document.documentElement.getAttribute('data-theme') === 'light' ? bgLight : bgDark
       Snackbar.show({
-        text,
+        text: '想要把别人复制到什么地方去呀？~ (～o￣3￣)～ ',
         backgroundColor: bg,
         showAction,
         duration,
         pos: position,
-        customClass: 'snackbar-css'
+        customClass: 'snackbar-css',
+        onActionClick: function (element) {
+          window.open("/about")
+        },
+        actionText: "关于我",
       })
     },
 
