@@ -86,7 +86,7 @@
         pos: position,
         customClass: 'snackbar-css',
         onActionClick: function (element) {
-          window.open("/about")
+          window.open("/2025/05/01/hello-world/")
         },
         actionText: "关于我",
       })

@@ -154,3 +154,11 @@ h6::before {
         -o-border-radius: 0px !important;
     }
 }
+
+/* 自定义snackbar中“关于我”按钮样式 */
+.snackbar-custom .action {
+    color: #ff69b4 !important;
+    /* 粉红色 */
+    font-weight: bold;
+    /* 可选，加粗 */
+}
