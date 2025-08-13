@@ -71,8 +71,13 @@
     },
 
     snackbarShow: (text, showAction = false, duration = 2000) => {
+      // 如果是复制提示，就替换成你自己的文字
+      if (text === "复制成功") {
+        text = "要把伦家复制到哪里去呀~ (～o￣3￣)～";
+      }
       const { position, bgLight, bgDark } = GLOBAL_CONFIG.Snackbar
       const bg = document.documentElement.getAttribute('data-theme') === 'light' ? bgLight : bgDark
+      
       Snackbar.show({
         text: text,
         backgroundColor: bg,
