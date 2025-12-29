@@ -1,0 +1,25 @@
+{
+  "name": "lhd♥WebSite",
+  "short_name": "MySite",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/images/pwa/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/pwa/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/pwa/web-app-manifest-512x512.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#9bebdc",
+  "background_color": "#ccfff9",
+  "display": "standalone"
+}

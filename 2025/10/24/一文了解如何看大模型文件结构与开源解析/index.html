@@ -1,0 +1,440 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一文了解如何看大模型文件结构与开源解析 | 赖海达的博客</title><meta name="author" content="赖海达"><meta name="copyright" content="赖海达"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="理解大模型的文件结构、权重等概念，是深入学习和使用它们的第一步。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文了解如何看大模型文件结构与开源解析">
+<meta property="og:url" content="http://example.com/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="赖海达的博客">
+<meta property="og:description" content="理解大模型的文件结构、权重等概念，是深入学习和使用它们的第一步。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84/%E5%B0%81%E9%9D%A2.png">
+<meta property="article:published_time" content="2025-10-24T09:13:03.000Z">
+<meta property="article:modified_time" content="2025-10-24T14:36:47.157Z">
+<meta property="article:author" content="赖海达">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84/%E5%B0%81%E9%9D%A2.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "一文了解如何看大模型文件结构与开源解析",
+  "url": "http://example.com/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/",
+  "image": "http://example.com/images/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84/%E5%B0%81%E9%9D%A2.png",
+  "datePublished": "2025-10-24T09:13:03.000Z",
+  "dateModified": "2025-10-24T14:36:47.157Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "赖海达",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/"><link rel="canonical" href="http://example.com/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/images/pwa/site.webmanifest"/><link rel="apple-touch-icon" sizes="180x180" href="/images/pwa/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/images/pwa/web-app-manifest-512x512.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/pwa/web-app-manifest-192x192.png"/><link rel="mask-icon" href="/images/pwa/favicon.svg" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"WSRIBS46CE","apiKey":"5f200c7783751675302f5d749932422d","indexName":"hexo_blog_index","hitsPerPage":6,"languages":{"input_placeholder":"搜索文章关键词","hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，耗时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":150,"languages":{"author":"作者: 赖海达","link":"链接: ","source":"来源: 赖海达的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一文了解如何看大模型文件结构与开源解析',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"><link rel="icon" type="image/png" href="/images/pwa/favicon-96x96.png" sizes="96x96" /><link rel="icon" type="image/svg+xml" href="/images/pwa/favicon.svg" /><link rel="shortcut icon" href="/images/pwa/favicon.ico" /><link rel="apple-touch-icon" sizes="180x180" href="/images/pwa/apple-touch-icon.png" /><meta name="apple-mobile-web-app-title" content="lhd♥web" /><link rel="manifest" href="/images/pwa/site.webmanifest" /><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="赖海达的博客" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  // ⏱️ 5 秒后强制关闭
+  const timeoutId = setTimeout(preloader.endLoading, 5000)
+
+  // ✅ 页面加载完，清除 timeout 并关闭动画
+  window.addEventListener('load', () => {
+    clearTimeout(timeoutId)
+    preloader.endLoading()
+  })
+
+  // ✅ 点击加载动画区域也关闭动画
+  $loadingBox?.addEventListener('click', () => {
+    preloader.endLoading()
+  })
+  //- const timeoutId = setTimeout(preloader.endLoading, 5000)
+  //- //- window.addEventListener('load', preloader.endLoading)
+  //- window.addEventListener('load', ()=>{clearTimeout(timeoutId);preloader.endLoading()})
+  
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/images/a62btcdg.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/一文读懂大模型结构/封面.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20185159.png" alt="Logo"><span class="site-name">赖海达的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">一文了解如何看大模型文件结构与开源解析</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">一文了解如何看大模型文件结构与开源解析<a class="post-edit-link" href="https://github.com/laihaida123/laihaida123.github.io_posts/一文了解如何看大模型文件结构与开源解析.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-10-24T09:13:03.000Z" title="发表于 2025-10-24 17:13:03">2025-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-24T14:36:47.157Z" title="更新于 2025-10-24 22:36:47">2025-10-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>理解大模型的文件结构、权重等概念，是深入学习和使用它们的第一步。</p>
+<p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SK4CzHEus/?spm_id_from=333.1007.tianma.1-3-3.click&vd_source=011c5bceddec4ecd130a48c8966f9e59">【LLM】10分钟带你看懂一个大模型的完整文件结构_哔哩哔哩_bilibili</a></p>
+<h3 id="🗂️-如何看懂大模型的完整文件结构"><a href="#🗂️-如何看懂大模型的完整文件结构" class="headerlink" title="🗂️ 如何看懂大模型的完整文件结构"></a>🗂️ 如何看懂大模型的完整文件结构</h3><p>你可以把一个预训练好的大模型想象成一个<strong>乐高成品</strong>。它的文件结构就是这个成品被拆开打包后的各个部分。</p>
+<p>在一个典型的模型开源仓库，你会看到以下核心文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DeepSeek-V3-Base/</span><br><span class="line">├── config.json               # 模型的结构蓝图</span><br><span class="line">├── model.safetensors.index.json  # 权重文件的“目录”</span><br><span class="line">├── model-00001-of-000XX.safetensors  # 权重文件分片1</span><br><span class="line">├── model-00002-of-000XX.safetensors  # 权重文件分片2</span><br><span class="line">├── ...                       # 更多权重分片</span><br><span class="line">├── tokenizer.json            # 分词器的“字典”</span><br><span class="line">└── README.md                 # 说明文档</span><br></pre></td></tr></table></figure>
+
+<p><strong>怎么看懂它？</strong></p>
+<ul>
+<li><strong>先看 <code>README.md</code> 和 <code>config.json</code></strong>：它们会告诉你这个模型的基本信息，比如它有多少层、维度多大，这决定了模型的“体型”。</li>
+<li><strong>再看权重文件</strong>：模型权重通常很大，会被分成多个 <code>.safetensors</code> 文件，方便下载和管理。</li>
+<li><strong>最后看分词器</strong>：<code>tokenizer.json</code> 决定了模型如何理解和生成文字。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">开源组件</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>模型权重</strong></td>
+<td align="left">模型通过训练学到的“知识”，本质是神经网络中各层的参数。</td>
+</tr>
+<tr>
+<td align="left"><strong>模型配置文件</strong></td>
+<td align="left">定义模型的“身体骨架”，如网络层数、注意力头数、隐藏层维度等。</td>
+</tr>
+<tr>
+<td align="left"><strong>分词器</strong></td>
+<td align="left">模型的“翻译官”，负责将输入文本转换成模型能理解的数字（Token）。</td>
+</tr>
+<tr>
+<td align="left"><strong>源代码</strong></td>
+<td align="left">包含模型架构、训练及推理的代码，是模型的“大脑运作原理”。</td>
+</tr>
+<tr>
+<td align="left"><strong>论文&#x2F;文档</strong></td>
+<td align="left">通常还包括阐述技术细节的论文和使用文档。</td>
+</tr>
+</tbody></table>
+<h3 id="🧠-大模型的结构-vs-权重"><a href="#🧠-大模型的结构-vs-权重" class="headerlink" title="🧠 大模型的结构 vs. 权重"></a>🧠 大模型的结构 vs. 权重</h3><p>这是一个核心概念，我们用<strong>人</strong>来类比：</p>
+<ul>
+<li><strong>模型结构</strong>：就像是人的<strong>大脑解剖结构</strong>。它定义了大脑有多少个脑区（模型层），各个脑区之间如何连接（前馈网络、注意力机制）。比如DeepSeek-V3有67B参数、128层Transformer层等等。这个结构是写在 <code>config.json</code> 和源代码里的。</li>
+<li><strong>模型权重</strong>：就像是人通过学习和经历储存在大脑中的<strong>知识和经验</strong>。它是模型在海量数据上训练后，学到的具体参数（数字）。这些知识（权重）被保存在 <code>.safetensors</code> 或 <code>.bin</code> 文件里。</li>
+</ul>
+<p><strong>简单总结：</strong></p>
+<ul>
+<li><strong>结构是“骨架”</strong>，是固定的设计。</li>
+<li><strong>权重是“血肉”</strong>，是学到的智慧。</li>
+<li>一个只有结构的模型是“空壳”，没有智能；而权重必须被加载到正确的结构里才能发挥作用。</li>
+</ul>
+<h3 id="🔒-简单介绍-Safetensors-文件"><a href="#🔒-简单介绍-Safetensors-文件" class="headerlink" title="🔒 简单介绍 Safetensors 文件"></a>🔒 简单介绍 Safetensors 文件</h3><p><strong>什么是“反序列化”？</strong><br>简单说，就是把硬盘上存储的文件数据，“恢复”成程序可以使用的内存中对象的过程。就像你把一个压缩包（硬盘文件）解压成可以编辑的文件夹（内存对象）。</p>
+<p><strong>为什么需要 <code>safetensors</code>？</strong></p>
+<ul>
+<li><strong>传统方式（如PyTorch的 <code>.pth</code> 文件）</strong>：使用Python的 <code>pickle</code> 进行序列化。<code>pickle</code> 很强大，不仅能保存数据，还能保存并执行代码。这带来了<strong>安全风险</strong>：如果一个恶意文件伪装成模型权重，你加载它时，里面的恶意代码可能会在你的电脑上运行。</li>
+<li><strong>Safetensors方式</strong>：它是一种<strong>只存数据、不存代码</strong>的格式。它专门为存储模型权重（大量的数字）而设计，非常安全。因为不涉及执行代码，所以从根本上杜绝了上述安全风险。</li>
+</ul>
+<p><strong>此外，它还有两大优点：</strong></p>
+<ol>
+<li><strong>加载速度快</strong>：比 <code>pickle</code> 格式快得多。</li>
+<li><strong>延迟加载</strong>：支持“内存映射”，可以只加载模型的一部分到内存，对大模型非常友好。</li>
+</ol>
+<p>所以，<code>safetensors</code> 就像一个<strong>只存放货物的安全仓库</strong>，而 <code>.pth</code> 像一个<strong>可能夹带私货的集装箱</strong>。</p>
+<h3 id="🔗-模型层与权重文件的映射关系"><a href="#🔗-模型层与权重文件的映射关系" class="headerlink" title="🔗 模型层与权重文件的映射关系"></a>🔗 模型层与权重文件的映射关系</h3><p>这个概念就像<strong>拼装乐高的说明书</strong>。</p>
+<ul>
+<li><strong>模型结构</strong>：是乐高拼装说明书的<strong>步骤图</strong>，它告诉你第一步需要什么零件，第二步需要什么零件。</li>
+<li><strong>权重文件</strong>：是所有乐高<strong>零件的打包盒</strong>。</li>
+<li><strong>映射关系</strong>：就是说明书上的 <strong>“步骤1所需的零件 → 在A盒的第三格”</strong> 这样的对应表。</li>
+</ul>
+<p>在技术层面，这个“映射关系”通常由一个<strong>索引文件</strong>（如 <code>model.safetensors.index.json</code>）来定义。这个文件里会明确写着：</p>
+<ul>
+<li>名为 <code>&quot;transformer.h.0.attn.q_proj.weight&quot;</code> 的权重（对应模型第一层注意力机制的查询投影层）</li>
+<li>它的数据存放在 <code>model-00001-of-000XX.safetensors</code> 文件中的某个位置。</li>
+</ul>
+<p>当你加载模型时，程序就是根据这个“映射关系”，把正确的“零件”（权重数据）放到正确的“位置”（模型层）上。</p>
+<h3 id="🌍-大模型开源究竟开源什么？"><a href="#🌍-大模型开源究竟开源什么？" class="headerlink" title="🌍 大模型开源究竟开源什么？"></a>🌍 大模型开源究竟开源什么？</h3><p>大模型开源 ≠ 只开源代码。它是一套完整的“开源大礼包”，主要包括：</p>
+<ol>
+<li><strong>模型权重</strong>：这是最核心的部分，是模型学到的“知识”。有了它，你就不用从头训练，可以直接使用或微调。</li>
+<li><strong>模型结构定义</strong>：通过 <code>config.json</code> 和源代码，告诉你这个模型是怎么构建的。</li>
+<li><strong>分词器</strong>：让模型能理解和生成人类语言的关键工具。</li>
+<li><strong>训练代码</strong>：如何从零开始训练出这个模型的代码（不一定全部开源，但像Meta的LLaMA、DeepSeek等通常会开源）。</li>
+<li><strong>推理代码</strong>：如何加载并使用模型进行对话、生成的代码。</li>
+<li><strong>技术文档&#x2F;论文</strong>：解释模型的设计思路、技术细节和性能表现。</li>
+</ol>
+<h3 id="🛠️以-DeepSeek-的开源为例"><a href="#🛠️以-DeepSeek-的开源为例" class="headerlink" title="🛠️以 DeepSeek 的开源为例"></a>🛠️以 DeepSeek 的开源为例</h3><p>DeepSeek 在这方面做得非常好，是一个典型的开源范例。</p>
+<ol>
+<li><p><strong>开源了什么？</strong></p>
+<ul>
+<li><strong>权重</strong>：在Hugging Face上提供了完整的模型权重文件（如 <code>deepseek-llm-7b-base</code> 等），通常是 <code>.safetensors</code> 格式，安全且高效。</li>
+<li><strong>结构</strong>：公开了详细的 <code>config.json</code>，明确其Transformer架构的配置。</li>
+<li><strong>分词器</strong>：提供了 <code>tokenizer.json</code> 等文件。</li>
+<li><strong>代码</strong>：在GitHub上有完整的训练和推理代码库。</li>
+<li><strong>论文</strong>：发布了详细的技术报告，阐述其模型设计、训练数据和性能。</li>
+</ul>
+</li>
+<li><p><strong>对于新手的意义</strong>：</p>
+<ul>
+<li>你不需要自己设计模型结构，也不需要花费数百万美元去训练，<strong>直接下载DeepSeek开源的权重</strong>，就能拥有一个能力很强的大模型。</li>
+<li>你可以基于开源的代码和权重，在自己的数据上做<strong>微调</strong>，让它适应你的特定任务。</li>
+<li>你可以<strong>学习、研究</strong>顶尖大模型是如何构建和训练的。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<p>你把大模型想象成一个学生。</p>
+<ul>
+<li><strong>开源结构</strong> &#x3D; 公开了他的<strong>学习方法和大脑构造</strong>。</li>
+<li><strong>开源权重</strong> &#x3D; 公开了他<strong>学完所有知识后的大脑状态</strong>。</li>
+<li><strong>开源代码</strong> &#x3D; 公开了<strong>如何教他（训练）和如何让他考试（推理）</strong> 的完整流程。</li>
+<li><strong>Safetensors</strong> &#x3D; 用一种<strong>安全、高效</strong>的格式把他的“大脑状态”备份了出来。</li>
+</ul>
+<p>最后我想说，未来的工作会变，但人类的理解力、创造力和韧性永远不会过时。现在，我们正在把这些人类独有的品质，与最强大的工具结合在一起。</p>
+<p>这不仅仅是为了找到工作，而是为了在AI时代，依然能够骄傲地说：我知道如何创造价值，我知道如何解决问题，我知道我是不可替代的。</p>
+<p>共勉。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">赖海达</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/">http://example.com/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">赖海达的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/images/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84/%E5%B0%81%E9%9D%A2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>不必打赏，欣赏下小哀</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/images/wp9ez7i7.png" target="_blank"><img class="post-qr-code-img" src="/images/wp9ez7i7.png"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/10/16/%E5%81%9C%E6%AD%A2%E4%B8%8Eflexbox%E6%88%98%E6%96%97%EF%BC%8C%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%81%9A%E5%87%BA%E7%A8%B3%E5%A6%82%E8%80%81%E7%8B%97%E7%9A%84%E5%B8%83%E5%B1%80/" title="停止与flexbox战斗，学习如何做出稳如老狗的布局"><img class="cover" src="/images/flexbox/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">停止与flexbox战斗，学习如何做出稳如老狗的布局</div></div><div class="info-2"><div class="info-item-1">Flexbox主轴和交叉轴在Flexbox布局中，有两个重要的轴：主轴和交叉轴。  主轴：flex容器的主要方向，由flex-direction属性决定 交叉轴：与主轴垂直的轴  主轴对齐 (justify-content)justify-content属性控制flex项目在主轴上的对齐方式。 1234.container &#123;  display: flex;  justify-content: 值;&#125;  常用属性值： flex-start（默认）：项目从主轴起点开始排列 flex-end：项目从主轴终点开始排列 center：项目在主轴居中排列 space-between：项目均匀分布，第一个在起点，最后一个在终点 space-around：项目均匀分布，每个项目两侧有相等空间 space-evenly：项目均匀分布，项目间和边缘的空间都相等  理解主轴对齐的基础想象一个水平的flex容器（默认情况），里面有多个项目： 123┌─────────────────────────────────────────┐│ [项目1] [项目2] [项目3]     ...</div></div></div></a><a class="pagination-related  no-desc" href="/2025/11/20/%E4%B8%80%E8%B5%B7%E4%BA%86%E8%A7%A3%E5%8D%95%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/" title="一起了解单层感知机的局限性"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">一起了解单层感知机的局限性</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">赖海达</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/laihaida123"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%97%82%EF%B8%8F-%E5%A6%82%E4%BD%95%E7%9C%8B%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AE%8C%E6%95%B4%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">🗂️ 如何看懂大模型的完整文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%A0-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%BB%93%E6%9E%84-vs-%E6%9D%83%E9%87%8D"><span class="toc-number">2.</span> <span class="toc-text">🧠 大模型的结构 vs. 权重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%92-%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D-Safetensors-%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">🔒 简单介绍 Safetensors 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%97-%E6%A8%A1%E5%9E%8B%E5%B1%82%E4%B8%8E%E6%9D%83%E9%87%8D%E6%96%87%E4%BB%B6%E7%9A%84%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB"><span class="toc-number">4.</span> <span class="toc-text">🔗 模型层与权重文件的映射关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8C%8D-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E6%BA%90%E7%A9%B6%E7%AB%9F%E5%BC%80%E6%BA%90%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">🌍 大模型开源究竟开源什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9B%A0%EF%B8%8F%E4%BB%A5-DeepSeek-%E7%9A%84%E5%BC%80%E6%BA%90%E4%B8%BA%E4%BE%8B"><span class="toc-number">6.</span> <span class="toc-text">🛠️以 DeepSeek 的开源为例</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/12/28/secure%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E7%9A%84%E9%A1%B9%E7%9B%AE/" title="secure文件系统-数据库安全的项目"><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E6%9C%9F%E6%9C%AB%E5%A4%A7%E4%BD%9C%E4%B8%9A/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="secure文件系统-数据库安全的项目"/></a><div class="content"><a class="title" href="/2025/12/28/secure%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E7%9A%84%E9%A1%B9%E7%9B%AE/" title="secure文件系统-数据库安全的项目">secure文件系统-数据库安全的项目</a><time datetime="2025-12-28T14:56:13.000Z" title="发表于 2025-12-28 22:56:13">2025-12-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/22/coze-agent%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AD%A6%E4%B9%A0/" title="coze agent构建原理及其学习">coze agent构建原理及其学习</a><time datetime="2025-12-22T07:01:14.000Z" title="发表于 2025-12-22 15:01:14">2025-12-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/20/%E4%B8%80%E8%B5%B7%E4%BA%86%E8%A7%A3%E5%8D%95%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7/" title="一起了解单层感知机的局限性">一起了解单层感知机的局限性</a><time datetime="2025-11-20T09:09:04.000Z" title="发表于 2025-11-20 17:09:04">2025-11-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/" title="一文了解如何看大模型文件结构与开源解析"><img src="/images/%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一文了解如何看大模型文件结构与开源解析"/></a><div class="content"><a class="title" href="/2025/10/24/%E4%B8%80%E6%96%87%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E7%9C%8B%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%8E%E5%BC%80%E6%BA%90%E8%A7%A3%E6%9E%90/" title="一文了解如何看大模型文件结构与开源解析">一文了解如何看大模型文件结构与开源解析</a><time datetime="2025-10-24T09:13:03.000Z" title="发表于 2025-10-24 17:13:03">2025-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/16/%E5%81%9C%E6%AD%A2%E4%B8%8Eflexbox%E6%88%98%E6%96%97%EF%BC%8C%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%81%9A%E5%87%BA%E7%A8%B3%E5%A6%82%E8%80%81%E7%8B%97%E7%9A%84%E5%B8%83%E5%B1%80/" title="停止与flexbox战斗，学习如何做出稳如老狗的布局"><img src="/images/flexbox/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="停止与flexbox战斗，学习如何做出稳如老狗的布局"/></a><div class="content"><a class="title" href="/2025/10/16/%E5%81%9C%E6%AD%A2%E4%B8%8Eflexbox%E6%88%98%E6%96%97%EF%BC%8C%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%81%9A%E5%87%BA%E7%A8%B3%E5%A6%82%E8%80%81%E7%8B%97%E7%9A%84%E5%B8%83%E5%B1%80/" title="停止与flexbox战斗，学习如何做出稳如老狗的布局">停止与flexbox战斗，学习如何做出稳如老狗的布局</a><time datetime="2025-10-16T06:30:27.000Z" title="发表于 2025-10-16 14:30:27">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/images/xnsyu0oi.png);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By 赖海达</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'laihaida123/comment_save',
+      'data-repo-id': 'R_kgDOPMVXJA',
+      'data-category-id': 'DIC_kwDOPMVXJM4Cs7uV',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/lite/builds/browser.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script></div></div><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
