@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【CCF-CSP-20131202】有趣的数 | 赖海达的博客</title><meta name="author" content="赖海达"><meta name="copyright" content="赖海达"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="动态规划666，反正我是想不到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【CCF-CSP-20131202】有趣的数">
+<meta property="og:url" content="http://example.com/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/index.html">
+<meta property="og:site_name" content="赖海达的博客">
+<meta property="og:description" content="动态规划666，反正我是想不到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png">
+<meta property="article:published_time" content="2026-03-12T08:53:26.000Z">
+<meta property="article:modified_time" content="2026-03-12T08:59:14.493Z">
+<meta property="article:author" content="赖海达">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "【CCF-CSP-20131202】有趣的数",
+  "url": "http://example.com/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/",
+  "image": "http://example.com/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png",
+  "datePublished": "2026-03-12T08:53:26.000Z",
+  "dateModified": "2026-03-12T08:59:14.493Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "赖海达",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/"><link rel="canonical" href="http://example.com/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/images/pwa/site.webmanifest"/><link rel="apple-touch-icon" sizes="180x180" href="/images/pwa/apple-touch-icon.png"/><link rel="icon" type="image/png" sizes="32x32" href="/images/pwa/web-app-manifest-512x512.png"/><link rel="icon" type="image/png" sizes="16x16" href="/images/pwa/web-app-manifest-192x192.png"/><link rel="mask-icon" href="/images/pwa/favicon.svg" color="#5bbad5"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"WSRIBS46CE","apiKey":"5f200c7783751675302f5d749932422d","indexName":"hexo_blog_index","hitsPerPage":6,"languages":{"input_placeholder":"搜索文章关键词","hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，耗时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":true,"limitCount":150,"languages":{"author":"作者: 赖海达","link":"链接: ","source":"来源: 赖海达的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【CCF-CSP-20131202】有趣的数',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"><link rel="icon" type="image/png" href="/images/pwa/favicon-96x96.png" sizes="96x96" /><link rel="icon" type="image/svg+xml" href="/images/pwa/favicon.svg" /><link rel="shortcut icon" href="/images/pwa/favicon.ico" /><link rel="apple-touch-icon" sizes="180x180" href="/images/pwa/apple-touch-icon.png" /><meta name="apple-mobile-web-app-title" content="lhd♥web" /><link rel="manifest" href="/images/pwa/site.webmanifest" /><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="赖海达的博客" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  // ⏱️ 5 秒后强制关闭
+  const timeoutId = setTimeout(preloader.endLoading, 5000)
+
+  // ✅ 页面加载完，清除 timeout 并关闭动画
+  window.addEventListener('load', () => {
+    clearTimeout(timeoutId)
+    preloader.endLoading()
+  })
+
+  // ✅ 点击加载动画区域也关闭动画
+  $loadingBox?.addEventListener('click', () => {
+    preloader.endLoading()
+  })
+  //- const timeoutId = setTimeout(preloader.endLoading, 5000)
+  //- //- window.addEventListener('load', preloader.endLoading)
+  //- window.addEventListener('load', ()=>{clearTimeout(timeoutId);preloader.endLoading()})
+  
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="web_bg" style="background-image: url(/images/a62btcdg.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/fsgrozus.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20185159.png" alt="Logo"><span class="site-name">赖海达的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">【CCF-CSP-20131202】有趣的数</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">【CCF-CSP-20131202】有趣的数<a class="post-edit-link" href="https://github.com/laihaida123/laihaida123.github.io_posts/【CCF-CSP-20131202】有趣的数.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-12T08:53:26.000Z" title="发表于 2026-03-12 16:53:26">2026-03-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-12T08:59:14.493Z" title="更新于 2026-03-12 16:59:14">2026-03-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="有趣的数"><a href="#有趣的数" class="headerlink" title="有趣的数"></a>有趣的数</h1><p><strong>时间限制：</strong> 1.0 秒</p>
+<p><strong>空间限制：</strong> 256 MB</p>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>我们把一个数称为有趣的，当且仅当：</p>
+<ol>
+<li>它的数字只包含 0,1,2,3且这四个数字都出现过至少一次。</li>
+<li>所有的 0 都出现在所有的 1 之前，而所有的 2 都出现在所有的 3 之前。</li>
+<li>最高位数字不为 00。</li>
+</ol>
+<p>因此，符合我们定义的最小的有趣的数是 2013。除此之外，4 位的有趣的数还有两个：2031 和 2301。</p>
+<p>请计算恰好有 n 位的有趣的数的个数。由于答案可能非常大，只需要输出答案除以 10的9次方+7的余数。</p>
+<h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>从标准输入读入数据。</p>
+<p>输入的第一行包含一个正整数 T<em>T</em>，表示共有 T<em>T</em> 组数据。</p>
+<p>接下来 T<em>T</em> 行，每组数据占一行，分别包含一个正整数 n。</p>
+<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>输出到标准输出。</p>
+<p>共输出 T<em>T</em> 行，每行一个整数，对应询问所求的答案，为恰好 n 位整数中有趣的数的个数除以 10的9次方+7 的余数。</p>
+<h2 id="输入数据-1"><a href="#输入数据-1" class="headerlink" title="输入数据 1"></a>输入数据 1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2</span><br><span class="line">4</span><br><span class="line">100</span><br></pre></td></tr></table></figure>
+
+<h2 id="输出数据-1"><a href="#输出数据-1" class="headerlink" title="输出数据 1"></a>输出数据 1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">929078566</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h2><p>对于所有数据，1≤T≤100, 1≤n≤10001≤<em>T</em>≤100, 1≤<em>n</em>≤1000。</p>
+<h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> n;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	vector&lt;ll&gt;<span class="built_in">q</span>(n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; n; i++)&#123;</span><br><span class="line">		cin &gt;&gt; q[i]; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> maxx = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; n; i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(q[i] &gt; maxx)&#123;</span><br><span class="line">			maxx = q[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	vector&lt;vector&lt;ll&gt; &gt;<span class="built_in">dp</span>(maxx + <span class="number">10</span>, <span class="built_in">vector</span>&lt;ll&gt;(<span class="number">6</span>,<span class="number">0</span>));</span><br><span class="line">	dp[<span class="number">1</span>][<span class="number">0</span>] = <span class="number">1</span>; </span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">2</span>; i &lt;= maxx; i++)&#123;</span><br><span class="line">		dp[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">		dp[i][<span class="number">1</span>] = (dp[i<span class="number">-1</span>][<span class="number">0</span>] + dp[i<span class="number">-1</span>][<span class="number">1</span>] * <span class="number">2</span>) % MOD;</span><br><span class="line">		dp[i][<span class="number">2</span>] = (dp[i<span class="number">-1</span>][<span class="number">0</span>] + dp[i<span class="number">-1</span>][<span class="number">2</span>]) % MOD;</span><br><span class="line">		dp[i][<span class="number">3</span>] = (dp[i<span class="number">-1</span>][<span class="number">1</span>] + dp[i<span class="number">-1</span>][<span class="number">3</span>] * <span class="number">2</span>) % MOD;</span><br><span class="line">		dp[i][<span class="number">4</span>] = (dp[i<span class="number">-1</span>][<span class="number">1</span>] + dp[i<span class="number">-1</span>][<span class="number">4</span>] * <span class="number">2</span> + dp[i<span class="number">-1</span>][<span class="number">2</span>]) % MOD;</span><br><span class="line">		dp[i][<span class="number">5</span>] = (dp[i<span class="number">-1</span>][<span class="number">3</span>] + dp[i<span class="number">-1</span>][<span class="number">4</span>] + dp[i<span class="number">-1</span>][<span class="number">5</span>] * <span class="number">2</span>) % MOD;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">		cout &lt;&lt; dp[q[i]][<span class="number">5</span>] &lt;&lt; endl; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><h3 id="🧩-第一步：理解题目规则（搭积木的规则）"><a href="#🧩-第一步：理解题目规则（搭积木的规则）" class="headerlink" title="🧩 第一步：理解题目规则（搭积木的规则）"></a>🧩 第一步：理解题目规则（搭积木的规则）</h3><p>题目说“有趣数”要满足三条规则，我们用白话翻译一下：</p>
+<ol>
+<li><strong>数字必须由{0,1,2,3}组成，且四个数字都要出现至少一次。</strong><br>→ 相当于你手里有四种颜色的积木（0红、1黄、2蓝、3绿），最后搭出来的塔必须四种颜色都有。</li>
+<li><strong>所有的0都在所有的1之前；所有的2都在所有的3之前。</strong><br>→ 红色的0积木必须全部放在黄色的1积木<strong>前面</strong>；蓝色的2积木必须全部放在绿色的3积木<strong>前面</strong>。<br>也就是说，一旦你放了1（黄色），后面就不能再放0（红色）；一旦你放了3（绿色），后面就不能再放2（蓝色）。</li>
+<li><strong>最高位（第一位）不能是0。</strong><br>→ 塔的底座不能是红色积木。</li>
+</ol>
+<hr>
+<h3 id="🧱-第二步：首位为什么必须是2？"><a href="#🧱-第二步：首位为什么必须是2？" class="headerlink" title="🧱 第二步：首位为什么必须是2？"></a>🧱 第二步：首位为什么必须是2？</h3><p>我们先想想第一位能放什么：</p>
+<ul>
+<li>不能是0（规则3禁止）</li>
+<li>如果是1：那么0必须在1之前，但第一位之前没有位置，所以0没地方放 → 排除</li>
+<li>如果是3：那么2必须在3之前，同样2没地方放 → 排除</li>
+<li>如果是2：可以！2后面可以放0或3，都不违反规则。</li>
+</ul>
+<p><strong>所以第一位只能是2</strong> 。<br>这就好比：我们建塔的底座必须是蓝色的2积木。</p>
+<hr>
+<h3 id="🏗️-第三步：搭积木的过程——6种中间状态"><a href="#🏗️-第三步：搭积木的过程——6种中间状态" class="headerlink" title="🏗️ 第三步：搭积木的过程——6种中间状态"></a>🏗️ 第三步：搭积木的过程——6种中间状态</h3><p>现在我们要从第一位（2）开始，一位一位往后面添加数字。每添加一位，我们手里的积木种类会发生变化。<strong>根据已经用了哪几种颜色，我们可以把“搭到一半的塔”分成6种状态</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">状态编号</th>
+<th align="left">已经用过的数字</th>
+<th align="left">通俗理解（塔的样子）</th>
+<th align="left">还没用的数字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left">{2}</td>
+<td align="left">只有蓝色</td>
+<td align="left">红、黄、绿</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">{2, 0}</td>
+<td align="left">蓝和红</td>
+<td align="left">黄、绿</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">{2, 3}</td>
+<td align="left">蓝和绿</td>
+<td align="left">红、黄</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">{2, 0, 1}</td>
+<td align="left">蓝、红、黄</td>
+<td align="left">绿</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">{2, 0, 3}</td>
+<td align="left">蓝、红、绿</td>
+<td align="left">黄</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">{2, 0, 1, 3}</td>
+<td align="left">四种颜色全齐了</td>
+<td align="left">无</td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：状态5就是最终的有趣数（四个数字都出现了）。</p>
+<hr>
+<h3 id="🔄-第四步：如何从一种状态变成下一种？（状态转移）"><a href="#🔄-第四步：如何从一种状态变成下一种？（状态转移）" class="headerlink" title="🔄 第四步：如何从一种状态变成下一种？（状态转移）"></a>🔄 第四步：如何从一种状态变成下一种？（状态转移）</h3><p>这是最关键的一步！我们想象在塔的末尾再放一块积木，看看能从哪些状态来，能变成哪些状态。</p>
+<h4 id="状态0（只有2）"><a href="#状态0（只有2）" class="headerlink" title="状态0（只有2）"></a>状态0（只有2）</h4><ul>
+<li>末尾可以放<strong>2</strong>（还是只有2，保持状态0）</li>
+<li>末尾可以放<strong>0</strong> → 变成状态1（有了2和0）</li>
+<li>末尾可以放<strong>3</strong> → 变成状态2（有了2和3）</li>
+<li><strong>不能放1</strong>（因为1必须在0之后，0还没出现）</li>
+</ul>
+<h4 id="状态1（有2和0）"><a href="#状态1（有2和0）" class="headerlink" title="状态1（有2和0）"></a>状态1（有2和0）</h4><ul>
+<li>末尾可以放<strong>2</strong>（保持状态1）</li>
+<li>末尾可以放<strong>0</strong>（保持状态1）</li>
+<li>末尾可以放<strong>1</strong> → 变成状态3（有了2,0,1）</li>
+<li>末尾可以放<strong>3</strong> → 变成状态4（有了2,0,3）</li>
+</ul>
+<h4 id="状态2（有2和3）"><a href="#状态2（有2和3）" class="headerlink" title="状态2（有2和3）"></a>状态2（有2和3）</h4><ul>
+<li>末尾可以放<strong>3</strong>（保持状态2）</li>
+<li>末尾可以放<strong>0</strong> → 变成状态4（有了2,3,0）</li>
+<li><strong>不能放2</strong>（因为3已经出现，2不能再出现）</li>
+<li><strong>不能放1</strong>（1需要在0之后，0还没出现）</li>
+</ul>
+<h4 id="状态3（有2-0-1）"><a href="#状态3（有2-0-1）" class="headerlink" title="状态3（有2,0,1）"></a>状态3（有2,0,1）</h4><ul>
+<li>末尾可以放<strong>1</strong>（保持状态3）</li>
+<li>末尾可以放<strong>2</strong>（保持状态3，因为2可以重复出现）</li>
+<li>末尾可以放<strong>3</strong> → 变成状态5（四色全）</li>
+<li><strong>不能放0</strong>（0必须在1之前，现在1已经出现）</li>
+</ul>
+<h4 id="状态4（有2-0-3）"><a href="#状态4（有2-0-3）" class="headerlink" title="状态4（有2,0,3）"></a>状态4（有2,0,3）</h4><ul>
+<li>末尾可以放<strong>0</strong>（保持状态4）</li>
+<li>末尾可以放<strong>3</strong>（保持状态4）</li>
+<li>末尾可以放<strong>1</strong> → 变成状态5（四色全）</li>
+<li><strong>不能放2</strong>（3已经出现）</li>
+</ul>
+<h4 id="状态5（四色全）"><a href="#状态5（四色全）" class="headerlink" title="状态5（四色全）"></a>状态5（四色全）</h4><ul>
+<li>末尾可以放<strong>1</strong>或<strong>3</strong>（保持状态5）</li>
+<li>不能放0或2（0不能在1之后，2不能在3之后）</li>
+</ul>
+<hr>
+<h3 id="📊-第五步：把转移关系变成数学公式"><a href="#📊-第五步：把转移关系变成数学公式" class="headerlink" title="📊 第五步：把转移关系变成数学公式"></a>📊 第五步：把转移关系变成数学公式</h3><p>现在我们用 <code>dp[i][j]</code> 表示：<strong>长度为 i 的数字，且处于状态 j 的个数</strong>。</p>
+<p>根据上面的转移关系，我们可以写出递推公式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">当前状态</th>
+<th align="left">可以从哪些前驱状态来</th>
+<th align="left">转移方式</th>
+<th align="left">公式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left">只能是前一位状态0</td>
+<td align="left">末尾加2</td>
+<td align="left"><code>dp[i][0] = 1</code></td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">前一位状态0 或 状态1</td>
+<td align="left">状态0加0，状态1加0或2</td>
+<td align="left"><code>dp[i][1] = dp[i-1][0] + 2*dp[i-1][1]</code></td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">前一位状态0 或 状态2</td>
+<td align="left">状态0加3，状态2加3</td>
+<td align="left"><code>dp[i][2] = dp[i-1][0] + dp[i-1][2]</code></td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">前一位状态1 或 状态3</td>
+<td align="left">状态1加1，状态3加1或2</td>
+<td align="left"><code>dp[i][3] = dp[i-1][1] + 2*dp[i-1][3]</code></td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">前一位状态1 或 状态2 或 状态4</td>
+<td align="left">状态1加3，状态2加0，状态4加0或3</td>
+<td align="left"><code>dp[i][4] = dp[i-1][1] + dp[i-1][2] + 2*dp[i-1][4]</code></td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">前一位状态3 或 状态4 或 状态5</td>
+<td align="left">状态3加3，状态4加1，状态5加1或3</td>
+<td align="left"><code>dp[i][5] = dp[i-1][3] + dp[i-1][4] + 2*dp[i-1][5]</code></td>
+</tr>
+</tbody></table>
+<h3 id="一些语法"><a href="#一些语法" class="headerlink" title="一些语法"></a>一些语法</h3><h4 id="vectordp-maxx-10-vector-6-0"><a href="#vectordp-maxx-10-vector-6-0" class="headerlink" title="vector&lt;vector &gt;dp(maxx + 10, vector(6,0));"></a>vector&lt;vector<ll> &gt;dp(maxx + 10, vector<ll>(6,0));</h4><ul>
+<li><code>vector&lt;vector&lt;ll&gt;&gt;</code>：声明了一个<strong>向量的向量</strong>，也就是二维数组。外层向量的每个元素本身又是一个<code>vector&lt;ll&gt;</code>（存放<code>long long</code>类型的一维向量）。</li>
+<li><code>dp</code>：变量名。</li>
+<li><code>(max_n + 1, vector&lt;ll&gt;(6, 0))</code>：这是构造函数的参数，用来初始化这个二维向量。<ul>
+<li>第一个参数 <code>max_n + 1</code>：指定外层向量有多少个元素。这里我们想创建 <code>max_n + 1</code> 行（对应长度从 0 到 max_n）。</li>
+<li>第二个参数 <code>vector&lt;ll&gt;(6, 0)</code>：指定每个外层元素（即每一行）的初始值。这里创建了一个内层向量，它有 6 个元素，每个元素初始化为 0。也就是说，每一行都是一个长度为 6 的向量，且所有值都是 0。</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">赖海达</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/">http://example.com/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">赖海达的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>不必打赏，欣赏下小哀</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/images/wp9ez7i7.png" target="_blank"><img class="post-qr-code-img" src="/images/wp9ez7i7.png"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/03/11/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" title="【CCF-CSP-20131202】最大的矩形"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">【CCF-CSP-20131202】最大的矩形</div></div><div class="info-2"><div class="info-item-1">最大的矩形时间限制： 1.0 秒 空间限制： 256 MB 题目描述在横轴上放了 nn 个相邻的矩形，每个矩形的宽度是 11，而第 i (1≤i≤n)i (1≤i≤n) 个矩形的高度是 hih**i。这 nn 个矩形构成了一个直方图。例如，下图中六个矩形的高度就分别是 3,1,6,5,2,33,1,6,5,2,3。  请找出能放在给定直方图里面积最大的矩形，它的边要与坐标轴平行。对于上面给出的例子，最大矩形如下图所示的阴影部分，面积是 1010。  输入格式从标准输入读入数据。 第一行包含一个整数 n，即矩形的数量。 第二行包含 n 个整数 h1,h2,⋯ ,hn，相邻的数之间由空格分隔。hi是第 i 个矩形的高度。 输出格式输出到标准输出。 输出一行，包含一个整数，即给定直方图内的最大矩形的面积。 输入数据 11263 1 6 5 2 3    输出数据 1110    子任务本题数据范围有所加强，对于所有数据，保证 1≤n≤10的5次方, 1≤hi≤10的9次方。 提示Chap 04 栈...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-05-03%20215002.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">赖海达</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/laihaida123"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">有趣的数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">输入格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">输出格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE-1"><span class="toc-number">1.4.</span> <span class="toc-text">输入数据 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E6%95%B0%E6%8D%AE-1"><span class="toc-number">1.5.</span> <span class="toc-text">输出数据 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%8C%83%E5%9B%B4"><span class="toc-number">1.6.</span> <span class="toc-text">数据范围</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%94%E6%A1%88"><span class="toc-number">1.7.</span> <span class="toc-text">答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90"><span class="toc-number">1.8.</span> <span class="toc-text">解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%A9-%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%90%86%E8%A7%A3%E9%A2%98%E7%9B%AE%E8%A7%84%E5%88%99%EF%BC%88%E6%90%AD%E7%A7%AF%E6%9C%A8%E7%9A%84%E8%A7%84%E5%88%99%EF%BC%89"><span class="toc-number">1.8.1.</span> <span class="toc-text">🧩 第一步：理解题目规则（搭积木的规则）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%A7%B1-%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E9%A6%96%E4%BD%8D%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E6%98%AF2%EF%BC%9F"><span class="toc-number">1.8.2.</span> <span class="toc-text">🧱 第二步：首位为什么必须是2？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%8F%97%EF%B8%8F-%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%90%AD%E7%A7%AF%E6%9C%A8%E7%9A%84%E8%BF%87%E7%A8%8B%E2%80%94%E2%80%946%E7%A7%8D%E4%B8%AD%E9%97%B4%E7%8A%B6%E6%80%81"><span class="toc-number">1.8.3.</span> <span class="toc-text">🏗️ 第三步：搭积木的过程——6种中间状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%84-%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E5%A6%82%E4%BD%95%E4%BB%8E%E4%B8%80%E7%A7%8D%E7%8A%B6%E6%80%81%E5%8F%98%E6%88%90%E4%B8%8B%E4%B8%80%E7%A7%8D%EF%BC%9F%EF%BC%88%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB%EF%BC%89"><span class="toc-number">1.8.4.</span> <span class="toc-text">🔄 第四步：如何从一种状态变成下一种？（状态转移）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%810%EF%BC%88%E5%8F%AA%E6%9C%892%EF%BC%89"><span class="toc-number">1.8.4.1.</span> <span class="toc-text">状态0（只有2）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%811%EF%BC%88%E6%9C%892%E5%92%8C0%EF%BC%89"><span class="toc-number">1.8.4.2.</span> <span class="toc-text">状态1（有2和0）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%812%EF%BC%88%E6%9C%892%E5%92%8C3%EF%BC%89"><span class="toc-number">1.8.4.3.</span> <span class="toc-text">状态2（有2和3）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%813%EF%BC%88%E6%9C%892-0-1%EF%BC%89"><span class="toc-number">1.8.4.4.</span> <span class="toc-text">状态3（有2,0,1）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%814%EF%BC%88%E6%9C%892-0-3%EF%BC%89"><span class="toc-number">1.8.4.5.</span> <span class="toc-text">状态4（有2,0,3）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%815%EF%BC%88%E5%9B%9B%E8%89%B2%E5%85%A8%EF%BC%89"><span class="toc-number">1.8.4.6.</span> <span class="toc-text">状态5（四色全）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%93%8A-%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E6%8A%8A%E8%BD%AC%E7%A7%BB%E5%85%B3%E7%B3%BB%E5%8F%98%E6%88%90%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F"><span class="toc-number">1.8.5.</span> <span class="toc-text">📊 第五步：把转移关系变成数学公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E8%AF%AD%E6%B3%95"><span class="toc-number">1.8.6.</span> <span class="toc-text">一些语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vectordp-maxx-10-vector-6-0"><span class="toc-number">1.8.6.1.</span> <span class="toc-text">vector&lt;vector &gt;dp(maxx + 10, vector(6,0));</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/12/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%89%E8%B6%A3%E7%9A%84%E6%95%B0/" title="【CCF-CSP-20131202】有趣的数">【CCF-CSP-20131202】有趣的数</a><time datetime="2026-03-12T08:53:26.000Z" title="发表于 2026-03-12 16:53:26">2026-03-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/11/%E3%80%90CCF-CSP-20131202%E3%80%91%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" title="【CCF-CSP-20131202】最大的矩形">【CCF-CSP-20131202】最大的矩形</a><time datetime="2026-03-11T07:28:52.000Z" title="发表于 2026-03-11 15:28:52">2026-03-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/10/%E3%80%90CCF-CSP-20131202%E3%80%91ISBN-%E5%8F%B7%E7%A0%81/" title="【CCF CSP-20131202】ISBN 号码">【CCF CSP-20131202】ISBN 号码</a><time datetime="2026-03-10T02:28:57.000Z" title="发表于 2026-03-10 10:28:57">2026-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/12/28/secure%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E7%9A%84%E9%A1%B9%E7%9B%AE/" title="secure文件系统-数据库安全的项目"><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E6%9C%9F%E6%9C%AB%E5%A4%A7%E4%BD%9C%E4%B8%9A/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="secure文件系统-数据库安全的项目"/></a><div class="content"><a class="title" href="/2025/12/28/secure%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8%E7%9A%84%E9%A1%B9%E7%9B%AE/" title="secure文件系统-数据库安全的项目">secure文件系统-数据库安全的项目</a><time datetime="2025-12-28T14:56:13.000Z" title="发表于 2025-12-28 22:56:13">2025-12-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/22/coze-agent%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%AD%A6%E4%B9%A0/" title="coze agent构建原理及其学习">coze agent构建原理及其学习</a><time datetime="2025-12-22T07:01:14.000Z" title="发表于 2025-12-22 15:01:14">2025-12-22</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/images/xnsyu0oi.png);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By 赖海达</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'laihaida123/comment_save',
+      'data-repo-id': 'R_kgDOPMVXJA',
+      'data-category-id': 'DIC_kwDOPMVXJM4Cs7uV',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/lite/builds/browser.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script></div></div><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
